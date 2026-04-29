@@ -4,57 +4,44 @@
 	let { form } = $props();
 </script>
 
-<div class="page">
-	<div class="card">
-		<h1>Saunavuorot</h1>
-		<p>Syötä huoneistosi numero ilmoittaaksesi saunavuorotoiveesi.</p>
-
+<div class="login-wrap">
+	<div class="login-card">
+		<h1>Hallinta</h1>
 		<form method="POST" use:enhance>
 			{#if form?.error}
 				<p class="error">{form.error}</p>
 			{/if}
 			<label>
-				Huoneisto
-				<input type="text" name="apartment" placeholder="esim. a1" autocomplete="off" required />
+				Salasana
+				<input type="password" name="password" required />
 			</label>
-			<button type="submit">Jatka →</button>
+			<button type="submit">Kirjaudu sisään</button>
 		</form>
-
-		<div class="links">
-			<a href="/results">Katso voimassa olevat vuorot</a>
-		</div>
 	</div>
 </div>
 
 <style>
-	.page {
+	.login-wrap {
 		min-height: 100vh;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		background: #f8fafc;
-		padding: 1rem;
 	}
 
-	.card {
+	.login-card {
 		background: white;
 		border: 1px solid #e2e8f0;
-		border-radius: 10px;
-		padding: 2.5rem 2rem;
+		border-radius: 8px;
+		padding: 2rem;
 		width: 100%;
-		max-width: 400px;
+		max-width: 360px;
 	}
 
 	h1 {
-		margin: 0 0 0.5rem;
-		font-size: 1.8rem;
-		color: #1e293b;
-	}
-
-	p {
 		margin: 0 0 1.5rem;
-		color: #64748b;
-		font-size: 0.95rem;
+		font-size: 1.5rem;
+		color: #1e293b;
 	}
 
 	form {
@@ -72,26 +59,20 @@
 	}
 
 	input {
-		padding: 0.7rem 0.85rem;
+		padding: 0.6rem 0.75rem;
 		border: 1px solid #cbd5e1;
 		border-radius: 6px;
 		font-size: 1rem;
 	}
 
-	input:focus {
-		outline: 2px solid #2563eb;
-		border-color: transparent;
-	}
-
 	button[type='submit'] {
-		padding: 0.75rem;
+		padding: 0.65rem;
 		background: #2563eb;
 		color: white;
 		border: none;
 		border-radius: 6px;
 		font-size: 1rem;
 		cursor: pointer;
-		font-weight: 600;
 	}
 
 	button[type='submit']:hover {
@@ -102,15 +83,5 @@
 		color: #dc2626;
 		font-size: 0.875rem;
 		margin: 0;
-	}
-
-	.links {
-		margin-top: 1.5rem;
-		text-align: center;
-	}
-
-	.links a {
-		font-size: 0.875rem;
-		color: #64748b;
 	}
 </style>

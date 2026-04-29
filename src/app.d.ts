@@ -9,6 +9,8 @@ declare global {
 		interface Platform {
 			env: {
 				DB: D1Database;
+				ADMIN_PASSWORD: string;
+				ADMIN_SECRET: string;
 			};
 		}
 	}
