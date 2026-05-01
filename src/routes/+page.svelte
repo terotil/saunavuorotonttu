@@ -1,27 +1,11 @@
-<script lang="ts">
-	import { enhance } from '$app/forms';
-
-	let { form } = $props();
-</script>
-
 <div class="page">
 	<div class="card">
 		<h1>Saunavuorot</h1>
-		<p>Syötä huoneistosi numero ilmoittaaksesi saunavuorotoiveesi.</p>
+		<p>Tervetuloa saunavuorojen hallintaan.</p>
 
-		<form method="POST" use:enhance>
-			{#if form?.error}
-				<p class="error">{form.error}</p>
-			{/if}
-			<label>
-				Huoneisto
-				<input type="text" name="apartment" placeholder="esim. a1" autocomplete="off" required />
-			</label>
-			<button type="submit">Jatka →</button>
-		</form>
-
-		<div class="links">
-			<a href="/results">Katso voimassa olevat vuorot</a>
+		<div class="actions">
+			<a href="/preferences" class="btn-primary">Ilmoita saunavuorotoiveet</a>
+			<a href="/results" class="btn-secondary">Katso voimassa olevat vuorot</a>
 		</div>
 	</div>
 </div>
@@ -43,6 +27,7 @@
 		padding: 2.5rem 2rem;
 		width: 100%;
 		max-width: 400px;
+		text-align: center;
 	}
 
 	h1 {
@@ -52,65 +37,44 @@
 	}
 
 	p {
-		margin: 0 0 1.5rem;
+		margin: 0 0 2rem;
 		color: #64748b;
 		font-size: 0.95rem;
 	}
 
-	form {
+	.actions {
 		display: flex;
 		flex-direction: column;
-		gap: 1rem;
+		gap: 0.75rem;
 	}
 
-	label {
-		display: flex;
-		flex-direction: column;
-		gap: 0.35rem;
-		font-size: 0.9rem;
-		color: #475569;
-	}
-
-	input {
-		padding: 0.7rem 0.85rem;
-		border: 1px solid #cbd5e1;
-		border-radius: 6px;
-		font-size: 1rem;
-	}
-
-	input:focus {
-		outline: 2px solid #2563eb;
-		border-color: transparent;
-	}
-
-	button[type='submit'] {
+	.btn-primary {
+		display: block;
 		padding: 0.75rem;
 		background: #2563eb;
 		color: white;
-		border: none;
 		border-radius: 6px;
 		font-size: 1rem;
-		cursor: pointer;
 		font-weight: 600;
+		text-decoration: none;
 	}
 
-	button[type='submit']:hover {
+	.btn-primary:hover {
 		background: #1d4ed8;
 	}
 
-	.error {
-		color: #dc2626;
-		font-size: 0.875rem;
-		margin: 0;
+	.btn-secondary {
+		display: block;
+		padding: 0.75rem;
+		background: white;
+		color: #475569;
+		border: 1px solid #e2e8f0;
+		border-radius: 6px;
+		font-size: 0.95rem;
+		text-decoration: none;
 	}
 
-	.links {
-		margin-top: 1.5rem;
-		text-align: center;
-	}
-
-	.links a {
-		font-size: 0.875rem;
-		color: #64748b;
+	.btn-secondary:hover {
+		background: #f8fafc;
 	}
 </style>

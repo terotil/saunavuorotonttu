@@ -49,7 +49,9 @@ CREATE TABLE preferences (
   resident_id TEXT NOT NULL REFERENCES residents(id),
   slots_requested INTEGER NOT NULL DEFAULT 1, -- 1 or 2
   submitted_at TEXT NOT NULL,
-  UNIQUE(allocation_id, resident_id)
+  access_key TEXT NOT NULL,
+  UNIQUE(allocation_id, resident_id),
+  UNIQUE(access_key)
 );
 
 -- Individual slot entries in a preference list (ordered by rank)

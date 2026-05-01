@@ -26,6 +26,25 @@ export async function getPreferenceForResident(
 	return { preference, slots };
 }
 
+export async function getPreferenceByKey(
+	db: D1Database,
+	accessKey: string
+): Promise<PreferenceWithSlots | null> {
+	const preference = await db
+		.prepare('SELECT * FROM preferences WHERE access_key = ?')
+		.bind(accessKey)
+		.first<Preference>();
+
+	if (!preference) return null;
+
+	const { results: slots } = await db
+		.prepare('SELECT * FROM preference_slots WHERE preference_id = ? ORDER BY rank')
+		.bind(preference.id)
+		.all<PreferenceSlot>();
+
+	return { preference, slots };
+}
+
 export async function getAllPreferencesForAllocation(db: D1Database, allocationId: string): Promise<PreferenceWithSlots[]> {
 	const { results: prefs } = await db
 		.prepare('SELECT * FROM preferences WHERE allocation_id = ?')
@@ -54,6 +73,23 @@ export async function getAllPreferencesForAllocation(db: D1Database, allocationI
 	return prefs.map((p: Preference) => ({ preference: p, slots: slotsByPref.get(p.id) ?? [] }));
 }
 
+export async function createEmptyPreference(
+	db: D1Database,
+	allocationId: string,
+	residentId: string
+): Promise<string> {
+	const prefId = nanoid();
+	const accessKey = crypto.randomUUID();
+	const now = new Date().toISOString();
+
+	await db
+		.prepare('INSERT INTO preferences (id, allocation_id, resident_id, slots_requested, submitted_at, access_key) VALUES (?, ?, ?, ?, ?, ?)')
+		.bind(prefId, allocationId, residentId, 1, now, accessKey)
+		.run();
+
+	return accessKey;
+}
+
 export async function replacePreferences(
 	db: D1Database,
 	allocationId: string,
@@ -62,11 +98,12 @@ export async function replacePreferences(
 	orderedSlotIds: string[]
 ): Promise<void> {
 	const existing = await db
-		.prepare('SELECT id FROM preferences WHERE allocation_id = ? AND resident_id = ?')
+		.prepare('SELECT id, access_key FROM preferences WHERE allocation_id = ? AND resident_id = ?')
 		.bind(allocationId, residentId)
-		.first<{ id: string }>();
+		.first<{ id: string; access_key: string }>();
 
 	const prefId = existing?.id ?? nanoid();
+	const accessKey = existing?.access_key ?? crypto.randomUUID();
 	const now = new Date().toISOString();
 
 	const stmts = [];
@@ -81,8 +118,8 @@ export async function replacePreferences(
 	} else {
 		stmts.push(
 			db
-				.prepare('INSERT INTO preferences (id, allocation_id, resident_id, slots_requested, submitted_at) VALUES (?, ?, ?, ?, ?)')
-				.bind(prefId, allocationId, residentId, slotsRequested, now)
+				.prepare('INSERT INTO preferences (id, allocation_id, resident_id, slots_requested, submitted_at, access_key) VALUES (?, ?, ?, ?, ?, ?)')
+				.bind(prefId, allocationId, residentId, slotsRequested, now, accessKey)
 		);
 	}
 

@@ -55,6 +55,14 @@
 						<span class="pref-indicator" title={r.has_preferences ? 'Toiveet jätetty' : 'Ei toiveita'}>
 							{r.has_preferences ? '✓' : '—'}
 						</span>
+						{#if r.preference_access_key}
+							<a
+								class="pref-link"
+								href="/preferences/{r.preference_access_key}"
+								title="Avaa toivelomake"
+								target="_blank"
+							>Linkki</a>
+						{/if}
 						{#if canEdit}
 							<div class="move-btns">
 								<button type="button" class="move-btn" onclick={() => moveUp(i)} disabled={i === 0}>↑</button>
@@ -143,6 +151,21 @@
 		color: #16a34a;
 		min-width: 1.5rem;
 		text-align: center;
+	}
+
+	.pref-link {
+		font-size: 0.8rem;
+		color: #2563eb;
+		text-decoration: none;
+		padding: 0.15rem 0.5rem;
+		border: 1px solid #bfdbfe;
+		border-radius: 4px;
+		background: #eff6ff;
+		white-space: nowrap;
+	}
+
+	.pref-link:hover {
+		background: #dbeafe;
 	}
 
 	.move-btns {

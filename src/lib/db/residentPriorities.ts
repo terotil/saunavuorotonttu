@@ -5,13 +5,15 @@ export type ResidentPriorityWithInfo = ResidentPriority & {
 	apartment: string;
 	name: string | null;
 	has_preferences: number; // 0 or 1
+	preference_access_key: string | null;
 };
 
 export async function getResidentPriorities(db: D1Database, allocationId: string): Promise<ResidentPriorityWithInfo[]> {
 	const { results } = await db
 		.prepare(
 			`SELECT rp.*, r.apartment, r.name,
-        CASE WHEN p.id IS NOT NULL THEN 1 ELSE 0 END as has_preferences
+        CASE WHEN p.id IS NOT NULL THEN 1 ELSE 0 END as has_preferences,
+        p.access_key as preference_access_key
       FROM resident_priority rp
       JOIN residents r ON rp.resident_id = r.id
       LEFT JOIN preferences p ON p.resident_id = rp.resident_id AND p.allocation_id = rp.allocation_id

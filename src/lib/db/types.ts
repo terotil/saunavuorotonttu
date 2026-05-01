@@ -41,6 +41,7 @@ export interface Preference {
 	resident_id: string;
 	slots_requested: number;
 	submitted_at: string;
+	access_key: string;
 }
 
 export interface PreferenceSlot {

@@ -11,6 +11,7 @@ declare global {
 				DB: D1Database;
 				ADMIN_PASSWORD: string;
 				ADMIN_SECRET: string;
+				ADMIN_EMAIL: string;
 			};
 		}
 	}
