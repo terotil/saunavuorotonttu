@@ -1,46 +1,51 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { getResidentById, getActiveAllocation, getSlotsForAllocation } from '$lib/db/index.js';
-import { getPreferenceForResident, replacePreferences } from '$lib/db/preferences.js';
+import { getAllResidents, getActiveAllocation } from '$lib/db/index.js';
+import { getPreferenceByKey, getPreferenceForResident, createEmptyPreference } from '$lib/db/preferences.js';
 
 export async function load({ cookies, platform }) {
-	const residentId = cookies.get('resident_id');
-	if (!residentId) throw redirect(302, '/');
-
-	const resident = await getResidentById(platform!.env.DB, residentId);
-	if (!resident) {
-		cookies.delete('resident_id', { path: '/' });
-		throw redirect(302, '/');
-	}
-
 	const allocation = await getActiveAllocation(platform!.env.DB);
-	if (!allocation) {
-		return { resident, allocation: null, slots: [], existing: null };
+
+	// If cookie key is valid for the active allocation, redirect directly to preference page
+	const cookieKey = cookies.get('preference_key');
+	if (cookieKey && allocation) {
+		const existing = await getPreferenceByKey(platform!.env.DB, cookieKey);
+		if (existing && existing.preference.allocation_id === allocation.id) {
+			throw redirect(302, `/preferences/${cookieKey}`);
+		}
 	}
 
-	const [slots, existing] = await Promise.all([
-		getSlotsForAllocation(platform!.env.DB, allocation.id),
-		getPreferenceForResident(platform!.env.DB, allocation.id, residentId)
-	]);
-
-	return { resident, allocation, slots, existing };
+	const residents = await getAllResidents(platform!.env.DB);
+	return { residents, allocation };
 }
 
 export const actions = {
-	save: async ({ request, cookies, platform }) => {
-		const residentId = cookies.get('resident_id');
-		if (!residentId) throw redirect(302, '/');
+	default: async ({ request, cookies, platform }) => {
+		const data = await request.formData();
+		const residentId = (data.get('resident_id') as string)?.trim();
+
+		const adminEmail = platform!.env.ADMIN_EMAIL ?? '';
+
+		if (!residentId) return fail(400, { error: 'Valitse huoneisto', adminEmail });
 
 		const allocation = await getActiveAllocation(platform!.env.DB);
-		if (!allocation) return fail(400, { error: 'Ei avointa varauskautta' });
+		if (!allocation || allocation.status !== 'open') {
+			return fail(400, { error: 'Toiveiden syöttö ei ole tällä hetkellä auki', adminEmail });
+		}
 
-		const data = await request.formData();
-		const slotsRequested = Math.min(2, Math.max(1, parseInt(data.get('slots_requested') as string) || 1));
-		const slotIds = data.getAll('slot_ids') as string[];
+		const existing = await getPreferenceForResident(platform!.env.DB, allocation.id, residentId);
+		if (existing) {
+			return fail(400, { error: 'already_exists', adminEmail });
+		}
 
-		if (slotIds.length === 0) return fail(400, { error: 'Valitse vähintään yksi sopiva vuoro' });
+		const accessKey = await createEmptyPreference(platform!.env.DB, allocation.id, residentId);
 
-		await replacePreferences(platform!.env.DB, allocation.id, residentId, slotsRequested, slotIds);
+		cookies.set('preference_key', accessKey, {
+			path: '/',
+			httpOnly: true,
+			sameSite: 'strict',
+			maxAge: 60 * 60 * 24 * 30
+		});
 
-		return { saved: true };
+		throw redirect(302, `/preferences/${accessKey}`);
 	}
 };

@@ -1,7 +1,7 @@
 ---
 id: TASK-002
 title: Secure preference access with per-preference secret key
-status: To Do
+status: In Progress
 assignee: []
 created_date: '2026-05-01 20:47'
 updated_date: '2026-05-01 20:49'
