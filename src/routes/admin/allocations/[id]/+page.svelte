@@ -84,8 +84,8 @@
 		<span class="link-desc">Määritä käytettävissä olevat viikoittaiset vuorot</span>
 	</a>
 	<a href="/admin/allocations/{a.id}/residents" class="link-card">
-		<span class="link-title">Asukkaat & järjestys</span>
-		<span class="link-desc">Aseta asukkaiden prioriteettijärjestys</span>
+		<span class="link-title">Asukkaat & varausjärjestys</span>
+		<span class="link-desc">Aseta asukkaiden varausjärjestys</span>
 	</a>
 	<a href="/admin/allocations/{a.id}/locked" class="link-card">
 		<span class="link-title">Lukitut varaukset</span>

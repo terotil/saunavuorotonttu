@@ -30,12 +30,12 @@
 <div class="header">
 	<div>
 		<a href="/admin/allocations/{a.id}" class="back">← {a.name}</a>
-		<h1>Asukkaat & prioriteettijärjestys</h1>
+		<h1>Asukkaat & varausjärjestys</h1>
 	</div>
 </div>
 
 <section class="card">
-	<p class="hint">Järjestä asukkaat prioriteettijärjestykseen (1 = korkein prioriteetti). Ylempänä oleva asukas saa vuoron ensin optimoinnissa.</p>
+	<p class="hint">Järjestä asukkaat varausjärjestykseen. Ylempänä olevalle asukkaalle jaetaan vuoro ensin optimoinnissa.</p>
 
 	{#if form?.reorderError}
 		<p class="error">{form.reorderError}</p>
