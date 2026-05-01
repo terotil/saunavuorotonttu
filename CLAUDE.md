@@ -16,3 +16,20 @@ See [README](./README.md)
 - Use template literals for string interpolation
 - Natural language in code and documentation: English
 - Natural language in app user interface: Finnish
+
+## Agent skills
+
+### Issue tracker: Backlog.md
+
+<CRITICAL_INSTRUCTION>
+Backlog.md issues are used. See `docs/agents/issue-tracker.md`.
+</CRITICAL_INSTRUCTION>
+
+### Triage labels
+
+Triage uses the canonical five-label vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Domain docs are configured as single-context (root-level `CONTEXT.md` + `docs/adr/`). See `docs/agents/domain.md`.
+
