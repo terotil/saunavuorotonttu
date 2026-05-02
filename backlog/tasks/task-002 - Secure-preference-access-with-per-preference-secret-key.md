@@ -1,10 +1,10 @@
 ---
 id: TASK-002
 title: Secure preference access with per-preference secret key
-status: In Progress
+status: Done
 assignee: []
 created_date: '2026-05-01 20:47'
-updated_date: '2026-05-01 20:49'
+updated_date: '2026-05-02 08:39'
 labels:
   - security
   - ux
@@ -15,6 +15,7 @@ references:
   - src/routes/+page.server.ts
   - CONTEXT.md
 priority: medium
+ordinal: 1000
 ---
 
 ## Description
@@ -42,18 +43,18 @@ Currently any resident can view/edit any apartment's preferences by entering tha
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Accessing /preferences/[key] with a valid key shows and allows editing that apartment's preference
-- [ ] #2 Accessing /preferences/[key] with an unknown key returns 404
-- [ ] #3 Returning visitor with key in cookie is taken directly to their preference view
-- [ ] #4 Apartment selection on entry is a dropdown of known apartments, not free text
-- [ ] #5 Entering an apartment that already has a preference does not expose that preference without the key. It justs asks for the key and directs to contact ADMIN_EMAIL (from env variable) if key is lost.
-- [ ] #6 access_key is generated at preference creation time and never changes
-- [ ] #7 Admin can view and copy the unique preference URL for any apartment from the allocation residents page
+- [x] #1 Accessing /preferences/[key] with a valid key shows and allows editing that apartment's preference
+- [x] #2 Accessing /preferences/[key] with an unknown key returns 404
+- [x] #3 Returning visitor with key in cookie is taken directly to their preference view
+- [x] #4 Apartment selection on entry is a dropdown of known apartments, not free text
+- [x] #5 Entering an apartment that already has a preference does not expose that preference without the key. It justs asks for the key and directs to contact ADMIN_EMAIL (from env variable) if key is lost.
+- [x] #6 access_key is generated at preference creation time and never changes
+- [x] #7 Admin can view and copy the unique preference URL for any apartment from the allocation residents page
 <!-- AC:END -->
 
 ## Definition of Done
 <!-- DOD:BEGIN -->
-- [ ] #1 Tests pass
-- [ ] #2 Documentation up to date
-- [ ] #3 No known vulnerabilities in dependencies
+- [x] #1 Tests pass
+- [x] #2 Documentation up to date
+- [x] #3 No known vulnerabilities in dependencies
 <!-- DOD:END -->
