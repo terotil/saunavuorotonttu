@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { page } from '$app/state';
 	import { DAY_NAMES } from '$lib/utils.js';
 	import type { Slot } from '$lib/db/types.js';
 
@@ -68,7 +69,8 @@
 		<div class="columns">
 			<section class="panel">
 				<h2>Saatavilla olevat vuorot</h2>
-				<p class="hint">Klikkaa vuoroa lisätäksesi sen toivelistallesi.</p>
+				<p class="hint">Klikkaa vuorot toivelistallesi mieluisuusjärjestyksessä, paras ensin. Jätä tähän vain vuorot, jotka eivät sinulle sovi.</p>
+				<p class="hint">Voit myöhemmin tarkastella ja muuttaa toiveitasi <a href="{page.url.href}">muokkauslinkillä</a> viimeiseen jättöpäivään saakka. Muista lopuksi tallentaa toiveesi!</p>
 
 				{#if unselectedByDay.length === 0}
 					<p class="muted">Kaikki vuorot on lisätty toivelistalle.</p>
@@ -215,7 +217,7 @@
 
 	h3 {
 		margin: 0.75rem 0 0.35rem;
-		font-size: 0.85rem;
+		font-size: 0.9rem;
 		font-weight: 600;
 		color: #475569;
 		text-transform: uppercase;
@@ -223,8 +225,8 @@
 	}
 
 	.hint {
-		font-size: 0.825rem;
-		color: #94a3b8;
+		font-size: 0.9rem;
+		color: #475569;
 		margin: 0 0 1rem;
 	}
 
