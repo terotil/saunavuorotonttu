@@ -91,4 +91,4 @@ npx wrangler deploy   # Deploy to Cloudflare Workers
 ```
 
 - `nodejs_compat` flag enables Node.js APIs in Workers
-- Admin secrets (`ADMIN_PASSWORD`, `ADMIN_SECRET`) set via `wrangler secret put` for production
+- Admin secrets (`ADMIN_PASSWORD`, `ADMIN_SECRET`) and support contact mail (`ADMIN_EMAIL`) set via `wrangler secret put` for production
