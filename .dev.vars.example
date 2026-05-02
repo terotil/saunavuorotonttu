@@ -1,2 +1,3 @@
 ADMIN_PASSWORD=change-me
 ADMIN_SECRET=change-me-to-a-random-secret-string
+ADMIN_EMAIL=change-me
