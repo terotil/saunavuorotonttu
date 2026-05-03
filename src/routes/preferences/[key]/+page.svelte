@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { page } from '$app/state';
 	import { DAY_NAMES } from '$lib/utils.js';
 	import type { Slot } from '$lib/db/types.js';
 
@@ -70,7 +69,7 @@
 			<section class="panel">
 				<h2>Saatavilla olevat vuorot</h2>
 				<p class="hint">Klikkaa vuorot toivelistallesi mieluisuusjärjestyksessä, paras ensin. Jätä tähän vain vuorot, jotka eivät sinulle sovi.</p>
-				<p class="hint">Voit myöhemmin tarkastella ja muuttaa toiveitasi <a href="{page.url.href}">muokkauslinkillä</a> viimeiseen jättöpäivään saakka. Muista lopuksi tallentaa toiveesi!</p>
+				<p class="hint">Muista lopuksi tallentaa toiveesi!</p>
 
 				{#if unselectedByDay.length === 0}
 					<p class="muted">Kaikki vuorot on lisätty toivelistalle.</p>
@@ -90,15 +89,11 @@
 
 			<section class="panel">
 				<h2>Toivelista ({selected.length} vuoroa)</h2>
-				<p class="hint">Järjestä vuorot mieluisuusjärjestykseen. Ensimmäinen = paras.</p>
+				<p class="hint">Järjestä vuorot mieluisuusjärjestykseen, mieluisin ensimmäiseksi.</p>
 
 				<form method="POST" action="?/save" use:enhance={() => async ({ update }) => update({ reset: false })}>
 					{#if form?.error}
 						<p class="error">{form.error}</p>
-					{/if}
-
-					{#if form?.saved}
-						<p class="success">Toiveet tallennettu!</p>
 					{/if}
 
 					<div class="slots-count">
@@ -135,6 +130,10 @@
 								</li>
 							{/each}
 						</ol>
+					{/if}
+
+					{#if form?.saved}
+						<p class="success">Toiveet tallennettu!</p>
 					{/if}
 
 					<button type="submit" class="btn-submit" disabled={selected.length === 0}>
