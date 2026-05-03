@@ -10,7 +10,7 @@ export async function load({ platform }) {
 export const actions = {
 	add: async ({ request, platform }) => {
 		const data = await request.formData();
-		const apartment = (data.get('apartment') as string)?.trim().toLowerCase();
+		const apartment = (data.get('apartment') as string)?.trim();
 		const name = (data.get('name') as string)?.trim() || null;
 
 		if (!apartment) return fail(400, { addError: 'Huoneiston numero vaaditaan' });
@@ -24,7 +24,7 @@ export const actions = {
 	edit: async ({ request, platform }) => {
 		const data = await request.formData();
 		const id = data.get('id') as string;
-		const apartment = (data.get('apartment') as string)?.trim().toLowerCase();
+		const apartment = (data.get('apartment') as string)?.trim();
 		const name = (data.get('name') as string)?.trim() || null;
 
 		if (!id || !apartment) return fail(400, { editError: 'Virheelliset tiedot' });
