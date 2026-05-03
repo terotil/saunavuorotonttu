@@ -1,7 +1,7 @@
 ---
 id: TASK-005
 title: Add bulk slot entry modes to allocation slot editor
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-05-02 08:12'
 labels:
@@ -26,10 +26,10 @@ Admin slot entry currently requires adding slots one by one. Add two additional 
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Admin can select a previous allocation and copy all its slots into the current allocation
-- [ ] #2 Admin can enter day + start time + slot length (minutes) + count and generate N consecutive slots
-- [ ] #3 Generated/copied slots appear in the slot list and can be edited or deleted individually
-- [ ] #4 Both modes only available while allocation is in draft or open status
+- [x] #1 Admin can select a previous allocation and copy all its slots into the current allocation
+- [x] #2 Admin can enter day + start time + slot length (minutes) + count and generate N consecutive slots
+- [x] #3 Generated/copied slots appear in the slot list and can be edited or deleted individually
+- [x] #4 Both modes only available while allocation is in draft or open status
 <!-- AC:END -->
 
 ## Definition of Done

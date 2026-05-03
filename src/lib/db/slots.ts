@@ -33,3 +33,26 @@ export async function createSlot(
 export async function deleteSlot(db: D1Database, id: string): Promise<void> {
 	await db.prepare('DELETE FROM slots WHERE id = ?').bind(id).run();
 }
+
+export async function createSlotsBulk(
+	db: D1Database,
+	allocationId: string,
+	slots: Array<{ dayOfWeek: number; startTime: string; endTime: string }>
+): Promise<number> {
+	if (slots.length === 0) return 0;
+
+	const maxOrder = await db
+		.prepare('SELECT MAX(display_order) as max_order FROM slots WHERE allocation_id = ?')
+		.bind(allocationId)
+		.first<{ max_order: number | null }>();
+	let displayOrder = (maxOrder?.max_order ?? 0) + 1;
+
+	const stmt = db.prepare(
+		'INSERT INTO slots (id, allocation_id, day_of_week, start_time, end_time, display_order) VALUES (?, ?, ?, ?, ?, ?)'
+	);
+	const batch = slots.map((s) =>
+		stmt.bind(nanoid(), allocationId, s.dayOfWeek, s.startTime, s.endTime, displayOrder++)
+	);
+	await db.batch(batch);
+	return slots.length;
+}

@@ -5,7 +5,7 @@
 	let { data, form } = $props();
 
 	const a = $derived(data.allocation);
-	const canEdit = $derived(a.status === 'draft');
+	const canEdit = $derived(a.status === 'draft' || a.status === 'open');
 
 	const days = [1, 2, 3, 4, 5, 6, 7];
 
@@ -57,6 +57,75 @@
 			</div>
 		</form>
 	</section>
+
+	<section class="card">
+		<h2>Luo peräkkäisiä vuoroja</h2>
+		<form method="POST" action="?/generate" use:enhance>
+			{#if form?.generateError}
+				<p class="error">{form.generateError}</p>
+			{/if}
+			{#if form?.generateSuccess}
+				<p class="success">{form.generateSuccess}</p>
+			{/if}
+			<div class="form-row">
+				<label>
+					Viikonpäivä
+					<select name="day_of_week" required>
+						<option value="">Valitse…</option>
+						{#each days as d}
+							<option value={d}>{DAY_NAMES[d]}</option>
+						{/each}
+					</select>
+				</label>
+				<label>
+					Alkaa
+					<input type="time" name="start_time" required />
+				</label>
+				<label>
+					Kesto (min)
+					<input type="number" name="length_minutes" min="1" max="1440" required />
+				</label>
+				<label>
+					Määrä
+					<input type="number" name="count" min="1" max="100" required />
+				</label>
+				<button type="submit">Luo vuorot</button>
+			</div>
+		</form>
+	</section>
+
+	{#if data.otherAllocations.length > 0}
+		<section class="card">
+			<h2>Kopioi vuorot toisesta varauskaudesta</h2>
+			<form method="POST" action="?/copy" use:enhance>
+				{#if form?.copyError}
+					<p class="error">{form.copyError}</p>
+				{/if}
+				{#if form?.copySuccess}
+					<p class="success">{form.copySuccess}</p>
+				{/if}
+				<div class="form-row">
+					<label>
+						Lähde
+						<select name="source_id" required>
+							<option value="">Valitse varauskausi…</option>
+							{#each data.otherAllocations as alloc}
+								<option value={alloc.id}>{alloc.name}</option>
+							{/each}
+						</select>
+					</label>
+					<button
+						type="submit"
+						onclick={(e) => {
+							if (!confirm('Kopioidaanko kaikki valitun varauskauden vuorot?')) e.preventDefault();
+						}}
+					>
+						Kopioi vuorot
+					</button>
+				</div>
+			</form>
+		</section>
+	{/if}
 {/if}
 
 <section class="card">
@@ -209,6 +278,20 @@
 		color: #dc2626;
 		font-size: 0.875rem;
 		margin: 0 0 0.75rem;
+	}
+
+	.success {
+		color: #15803d;
+		font-size: 0.875rem;
+		margin: 0 0 0.75rem;
+	}
+
+	input[type='number'] {
+		padding: 0.55rem 0.75rem;
+		border: 1px solid #cbd5e1;
+		border-radius: 6px;
+		font-size: 0.95rem;
+		width: 6rem;
 	}
 
 	.muted {
