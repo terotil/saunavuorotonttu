@@ -28,6 +28,8 @@
 	</div>
 </div>
 
+<div class="columns">
+<div>
 {#if canEdit}
 	<section class="card">
 		<h2>Lisää vuoro</h2>
@@ -96,7 +98,7 @@
 
 	{#if data.otherAllocations.length > 0}
 		<section class="card">
-			<h2>Kopioi vuorot toisesta varauskaudesta</h2>
+			<h2>Kopioi vuorot toisesta varausjaksosta</h2>
 			<form method="POST" action="?/copy" use:enhance>
 				{#if form?.copyError}
 					<p class="error">{form.copyError}</p>
@@ -108,7 +110,7 @@
 					<label>
 						Lähde
 						<select name="source_id" required>
-							<option value="">Valitse varauskausi…</option>
+							<option value="">Valitse varausjakso…</option>
 							{#each data.otherAllocations as alloc}
 								<option value={alloc.id}>{alloc.name}</option>
 							{/each}
@@ -117,7 +119,7 @@
 					<button
 						type="submit"
 						onclick={(e) => {
-							if (!confirm('Kopioidaanko kaikki valitun varauskauden vuorot?')) e.preventDefault();
+							if (!confirm('Kopioidaanko kaikki valitun varausjakson vuorot?')) e.preventDefault();
 						}}
 					>
 						Kopioi vuorot
@@ -127,6 +129,7 @@
 		</section>
 	{/if}
 {/if}
+</div>
 
 <section class="card">
 	<h2>Määritellyt vuorot ({data.slots.length})</h2>
@@ -162,6 +165,7 @@
 		{/each}
 	{/if}
 </section>
+</div>
 
 <style>
 	.header {
@@ -179,6 +183,19 @@
 	h1 {
 		margin: 0;
 		font-size: 1.4rem;
+	}
+
+	.columns {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.5rem;
+		align-items: start;
+	}
+
+	@media (max-width: 640px) {
+		.columns {
+			grid-template-columns: 1fr;
+		}
 	}
 
 	.card {

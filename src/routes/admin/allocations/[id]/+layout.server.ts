@@ -3,6 +3,6 @@ import { getAllocationById } from '$lib/db/index.js';
 
 export async function load({ params, platform }) {
 	const allocation = await getAllocationById(platform!.env.DB, params.id);
-	if (!allocation) throw error(404, 'Varauskausi ei löydy');
+	if (!allocation) throw error(404, 'Varausjaksoa ei löydy');
 	return { allocation };
 }

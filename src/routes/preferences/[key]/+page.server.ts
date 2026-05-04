@@ -37,7 +37,7 @@ export const actions = {
 
 		const allocation = await getActiveAllocation(platform!.env.DB);
 		if (!allocation || existing.preference.allocation_id !== allocation.id) {
-			return fail(400, { error: 'Ei avointa varauskautta' });
+			return fail(400, { error: 'Ei avointa varausjaksoa' });
 		}
 
 		const data = await request.formData();
