@@ -14,3 +14,18 @@ directory = ".svelte-kit/cloudflare"
 binding = "DB"
 database_name = "saunavuorotonttu"
 database_id = "c6576d90-79b2-407d-ac53-7121b656bbc0"
+
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+persist = true
+invocation_logs = true
+
+[observability.traces]
+enabled = true
+persist = true
+head_sampling_rate = 1
