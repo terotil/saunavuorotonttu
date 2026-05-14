@@ -54,7 +54,8 @@ Key design: no groups — priority is per-allocation via `resident_priority(allo
 ## Routes
 
 - `/` — apartment entry, sets `resident_id` cookie
-- `/preferences` — resident preference editor (requires `resident_id` cookie + open allocation)
+- `/preferences` — apartment entry point; redirects to `/preferences/[key]` for the active allocation
+- `/preferences/[key]` — preference editor (open allocation) or read-only view with assignment result (closed/optimized/published)
 - `/results` — published rotation calendar
 - `/admin` — allocation list + create (HMAC cookie auth, password from `ADMIN_PASSWORD` env var)
 - `/admin/setup` — residents CRUD

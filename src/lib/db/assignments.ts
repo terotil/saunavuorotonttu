@@ -35,6 +35,25 @@ export async function writeAssignments(
 	}
 }
 
+export async function getAssignmentsForResident(
+	db: D1Database,
+	allocationId: string,
+	residentId: string
+): Promise<AssignmentWithInfo[]> {
+	const { results } = await db
+		.prepare(
+			`SELECT a.*, r.apartment, s.day_of_week, s.start_time, s.end_time
+       FROM assignments a
+       JOIN residents r ON a.resident_id = r.id
+       JOIN slots s ON a.slot_id = s.id
+       WHERE a.allocation_id = ? AND a.resident_id = ?
+       ORDER BY s.day_of_week, s.start_time`
+		)
+		.bind(allocationId, residentId)
+		.all<AssignmentWithInfo>();
+	return results;
+}
+
 export async function getAssignmentsForAllocation(db: D1Database, allocationId: string): Promise<AssignmentWithInfo[]> {
 	const { results } = await db
 		.prepare(

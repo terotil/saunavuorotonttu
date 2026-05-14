@@ -60,7 +60,45 @@
 		<p class="resident-badge">Huoneisto {data.resident.apartment}</p>
 	</header>
 
-	{#if data.allocation.status !== 'open'}
+	{#if data.readOnly}
+		<div class="notice notice-closed">
+			<p><strong>Varausjakso on suljettu.</strong> Toiveitasi ei voi enää muuttaa.</p>
+		</div>
+
+		<div class="columns">
+			<section class="panel">
+				<h2>Lähettämäsi toiveet</h2>
+				{#if selected.length === 0}
+					<p class="muted">Et lähettänyt toiveita tähän varausjaksoon.</p>
+				{:else}
+					<ol class="ordered-list">
+						{#each selected as slotId, i}
+							{@const s = slotById.get(slotId)}
+							<li class="ordered-item">
+								<span class="rank">#{i + 1}</span>
+								<span class="label">{s ? slotLabel(s) : slotId}</span>
+							</li>
+						{/each}
+					</ol>
+				{/if}
+			</section>
+
+			<section class="panel">
+				<h2>Myönnetyt vuorot</h2>
+				{#if data.assignments.length === 0}
+					<p class="muted">Sinulle ei ole myönnetty vuoroja tässä varausjaksossa.</p>
+				{:else}
+					<ul class="assigned-list">
+						{#each data.assignments as a}
+							<li class="assigned-item">
+								<span class="label">{DAY_NAMES[a.day_of_week]} {a.start_time}–{a.end_time}</span>
+							</li>
+						{/each}
+					</ul>
+				{/if}
+			</section>
+		</div>
+	{:else if data.allocation.status !== 'open'}
 		<div class="notice">
 			<p>Toiveiden syöttö ei ole tällä hetkellä auki. Tarkista myöhemmin uudelleen.</p>
 		</div>
@@ -186,6 +224,13 @@
 		border-radius: 8px;
 		padding: 1.25rem 1.5rem;
 		color: #854d0e;
+		margin-bottom: 1.5rem;
+	}
+
+	.notice-closed {
+		background: #f1f5f9;
+		border-color: #cbd5e1;
+		color: #475569;
 	}
 
 	.columns {
@@ -388,5 +433,25 @@
 	.muted {
 		color: #94a3b8;
 		font-size: 0.875rem;
+	}
+
+	.assigned-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+	}
+
+	.assigned-item {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 0.6rem;
+		background: #eff6ff;
+		border: 1px solid #bfdbfe;
+		border-radius: 6px;
+		font-size: 0.9rem;
 	}
 </style>
