@@ -68,18 +68,24 @@
 					<tr>
 						<th>Aika</th>
 						<th>Huoneisto</th>
-						<!-- <th>Toive #</th> -->
 						<th>Tyyppi</th>
 					</tr>
 				</thead>
 				<tbody>
 					{#each group.slots as s}
+						{#if s.apartment}
 						<tr class={s.is_locked ? 'locked-row' : ''}>
 							<td>{s.start_time}–{s.end_time}</td>
 							<td>{s.apartment}</td>
-							<!-- <td>{s.preference_rank}</td> -->
 							<td>{s.is_locked ? '🔒 lukittu' : 'optimoitu'}</td>
 						</tr>
+						{:else}
+						<tr class="unbooked-row">
+							<td>{s.start_time}–{s.end_time}</td>
+							<td>&mdash;</td>
+							<td>vapaa</td>
+						</tr>
+						{/if}
 					{/each}
 				</tbody>
 			</table>
@@ -194,7 +200,7 @@
 		background: #fef9c3;
 	}
 
-	.muted {
+	.muted, .unbooked-row {
 		color: #94a3b8;
 	}
 </style>

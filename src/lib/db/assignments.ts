@@ -58,10 +58,10 @@ export async function getAssignmentsForAllocation(db: D1Database, allocationId: 
 	const { results } = await db
 		.prepare(
 			`SELECT a.*, r.apartment, s.day_of_week, s.start_time, s.end_time
-       FROM assignments a
-       JOIN residents r ON a.resident_id = r.id
-       JOIN slots s ON a.slot_id = s.id
-       WHERE a.allocation_id = ?
+       FROM slots s
+       LEFT JOIN assignments a ON a.slot_id = s.id
+       LEFT JOIN residents r ON a.resident_id = r.id
+       WHERE s.allocation_id = ?
        ORDER BY s.day_of_week, s.start_time`
 		)
 		.bind(allocationId)
